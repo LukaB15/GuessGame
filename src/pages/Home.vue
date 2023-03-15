@@ -10,8 +10,8 @@ const search = ref('')
 const games = ref('')
 const endOfGame = ref(false);
 const WinOfGame = ref(false);
-const blurClass = ref('a')
 const pagenumber = ref(1)
+const blurAmount = ref(1)
 
 const randomnumber = computed(() => {
   return  Math.floor(Math.random() * 19) + 1;
@@ -32,12 +32,12 @@ function getName(name,randomnumber){
       if(games.value[randomnumber].name === name ){
             SucessMsg.value = "Réussi"
             WinOfGame.value = !WinOfGame.value;
-            blurClass.value= 'aaaaa'
+            blurAmount.value= 0
       }
       else{
             numberErr.value = numberErr.value - 1;
             SucessMsg.value = "FAIL, Il vous reste " + numberErr.value + " tentative(s)";
-            blurClass.value = blurClass.value + 'a';
+            blurAmount.value = blurAmount.value - 0.25;
       }
       if(numberErr.value <= 0){
             SucessMsg.value = "Fin de partie, plus de tentatives restantes"
@@ -56,7 +56,7 @@ function nextlvl(){
       search.value= "";
       numberErr.value = 5;
       SucessMsg.value= 'Vous avez 5 tentatives';
-      blurClass.value = 'a'
+      blurAmount.value = 1
 }
 
 function filteredList() {
@@ -71,7 +71,7 @@ getGames();
 
 <template>
       <div class="container">
-            <img class="ImgGuess" :src='games[randomnumber].background_image' :id="blurClass" />
+            <img class="ImgGuess" :src='games[randomnumber].background_image' :style="{ filter: `blur(${blurAmount}rem)` }" />
             <p>{{ SucessMsg }}</p>
             <div v-if="endOfGame">
                   <p>Réponse : {{ games[randomnumber].name }}</p>
@@ -83,7 +83,7 @@ getGames();
             </div>    
             <div v-else>
                   <button @click="nextlvl()">Next level </button>
-                  <input type="text" v-model="search"/>
+                  <input type="text" v-model="search" autofocus/>
 
                   <!-- <SearchbarResults :search="search" :games="games" @response="(msg) => SucessMsg = msg"  /> -->
 
@@ -116,21 +116,5 @@ getGames();
 }
 .ImgGuess{
       width:50%
-}
-#a{
-      filter:blur(1rem);
-      width:50%;
-}
-#aa{
-      filter:blur(0.75rem);
-}
-#aaa{
-      filter:blur(0.5rem);
-}
-#aaaa{
-      filter:blur(0.25rem);
-}
-#aaaaa{
-      filter:blur(0);
 }
 </style>
