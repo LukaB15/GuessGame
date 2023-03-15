@@ -61,7 +61,7 @@ function nextlvl(){
 
 function filteredList() {
   return games.value.filter((val) =>
-    val.name.toLowerCase().startsWith(search.value.toLowerCase())
+    val.name.toLowerCase().includes(search.value.toLowerCase())
   );
 }
 
@@ -75,6 +75,7 @@ getGames();
             <p>{{ SucessMsg }}</p>
             <div v-if="endOfGame">
                   <p>Réponse : {{ games[randomnumber].name }}</p>
+                  <p>Score : {{ pagenumber - 1 }}</p>
                   <button @click="reload()">Restart </button>
             </div>
             <div v-else-if="WinOfGame">
